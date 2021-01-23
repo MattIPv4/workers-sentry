@@ -1,18 +1,4 @@
-const SentryWebpackPlugin = require('@sentry/webpack-plugin');
-const { default: Toucan } = require('toucan-js');
-
-class WebpackPlugin extends SentryWebpackPlugin {
-    constructor(token, org, project) {
-        // Wrap the default Sentry plugin with Workers specific settings
-        super({
-            authToken: token,
-            org: org,
-            project: project,
-            include: './dist',
-            ignore: ['node_modules', 'webpack.config.js'],
-        });
-    }
-}
+const Toucan = require('toucan-js');
 
 // Thanks @cloudflare/worker-sentry for the base of this
 class Sentry extends Toucan {
@@ -36,6 +22,7 @@ class Sentry extends Toucan {
             rewriteFrames: {
                 root: '/',
             },
+            release: SENTRY_RELEASE && SENTRY_RELEASE.id,
             ...opts,
         });
 
@@ -53,4 +40,4 @@ class Sentry extends Toucan {
     }
 }
 
-module.exports = { WebpackPlugin, Sentry };
+module.exports = Sentry;
