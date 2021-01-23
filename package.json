@@ -1,0 +1,21 @@
+{
+  "name": "workers-sentry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattIPv4/workers-sentry.git"
+  },
+  "author": "Matt (IPv4) Cowley",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/MattIPv4/workers-sentry/issues"
+  },
+  "homepage": "https://github.com/MattIPv4/workers-sentry#readme",
+  "dependencies": {
+    "@sentry/webpack-plugin": "^1.14.0",
+    "toucan-js": "^2.2.1"
+  }
+}
