@@ -3,13 +3,21 @@ const Toucan = require('toucan-js').default;
 // Thanks @cloudflare/worker-sentry for the base of this
 class Sentry extends Toucan {
     constructor(event, dsn, opts = {}) {
-        // Add a fake request if not defined (scheduled event etc.)
-        event.request = event.request || new Request(`http://${event.type}.event/`);
+        // Create a fake event based on the real one
+        const internalEvent = {
+            type: event.type,
+
+            // Use wait until to ensure error is captured
+            waitUntil: event.waitUntil.bind(event),
+
+            // Add a fake request if not defined (scheduled event etc.)
+            request: event.request || new Request(`http://${event.type}.event/`),
+        };
 
         // Wrap Toucan with some better defaults
         super({
             dsn: process.env.SENTRY_DSN,
-            event,
+            event: internalEvent,
             allowedHeaders: [
                 'user-agent',
                 'cf-challenge',
@@ -30,10 +38,10 @@ class Sentry extends Toucan {
         });
 
         // Set the type (fetch event or scheduled event)
-        this.setTag('type', event.type);
+        this.setTag('type', internalEvent.type);
 
         // Get the request
-        const request = event.request;
+        const request = internalEvent.request;
 
         // Determine with Cloudflare colo the req went to
         const colo = request.cf && request.cf.colo ? request.cf.colo : 'UNKNOWN';
