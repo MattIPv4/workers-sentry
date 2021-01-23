@@ -1,4 +1,4 @@
-const Toucan = require('toucan-js');
+const Toucan = require('toucan-js').default;
 
 // Thanks @cloudflare/worker-sentry for the base of this
 class Sentry extends Toucan {
