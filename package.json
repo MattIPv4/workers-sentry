@@ -1,7 +1,7 @@
 {
   "name": "workers-sentry",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Some wrappers for using Sentry in Workers",
   "main": "index.js",
   "keywords": [],
   "repository": {
