@@ -3,10 +3,13 @@ const Toucan = require('toucan-js').default;
 // Thanks @cloudflare/worker-sentry for the base of this
 class Sentry extends Toucan {
     constructor(event, dsn, opts = {}) {
+        // Add a fake request if not defined (scheduled event etc.)
+        event.request = event.request || new Request(`http://${event.type}.event/`);
+
         // Wrap Toucan with some better defaults
         super({
             dsn: process.env.SENTRY_DSN,
-            event: event,
+            event,
             allowedHeaders: [
                 'user-agent',
                 'cf-challenge',
@@ -25,6 +28,9 @@ class Sentry extends Toucan {
             release: SENTRY_RELEASE && SENTRY_RELEASE.id,
             ...opts,
         });
+
+        // Set the type (fetch event or scheduled event)
+        this.setTag('type', event.type);
 
         // Get the request
         const request = event.request;
