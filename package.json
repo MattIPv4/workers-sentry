@@ -1,6 +1,6 @@
 {
   "name": "workers-sentry",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Some wrappers for using Sentry in Workers",
   "keywords": [],
   "repository": {
@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/MattIPv4/workers-sentry#readme",
   "dependencies": {
-    "@sentry/webpack-plugin": "^1.14.0",
-    "toucan-js": "^2.2.1"
+    "@sentry/webpack-plugin": "^1.16.0",
+    "toucan-js": "^2.4.1"
   }
 }

@@ -4,8 +4,6 @@ Some wrappers for using Sentry in Workers.
 
 Allows for source maps to be correctly uploaded to Sentry for your Workers, and for Sentry to be used in the Worker for error reporting.
 
-Also supports error reporting for scheduled worker events, injecting a fake request for `http://scheduled.event` in the Sentry data.
-
 ## Webpack config
 
 ```js
@@ -45,12 +43,10 @@ addEventListener('fetch', event => {
     const sentry = new WorkersSentry(event, process.env.SENTRY_DSN);
 
     // Process the event
-    try {
-        return event.respondWith(handleRequest(event.request));
-    } catch (err) {
+    return event.respondWith(handleRequest(event.request)).catch(err => {
         sentry.captureException(err);
         throw err;
-    }
+    });
 });
 
 addEventListener('scheduled', event => {
@@ -58,12 +54,10 @@ addEventListener('scheduled', event => {
     const sentry = new WorkersSentry(event, process.env.SENTRY_DSN);
 
     // Process the event
-    try {
-        return event.waitUntil(handleScheduled());
-    } catch (err) {
+    return event.waitUntil(handleScheduled()).catch(err => {
         sentry.captureException(err);
         throw err;
-    }
+    });
 });
 ```
 
